@@ -14,7 +14,7 @@ from irrigation_pi.install import (
     install_application_configuration,
     install_database,
     install_debian_packages,
-    install_nginx_configuration,
+    install_nginx,
     install_systemd_configuration,
     install_wifi_hotspot,
 )
@@ -24,7 +24,7 @@ from irrigation_pi.uninstall import (
     uninstall_all,
     uninstall_application_configuration,
     uninstall_database,
-    uninstall_nginx_configuration,
+    uninstall_nginx,
     uninstall_systemd_configuration,
     uninstall_wifi_hotspot,
 )
@@ -55,7 +55,7 @@ install.add_command(install_debian_packages)
 install.add_command(install_application_configuration)
 install.add_command(install_database)
 install.add_command(install_systemd_configuration)
-install.add_command(install_nginx_configuration)
+install.add_command(install_nginx)
 install.add_command(install_wifi_hotspot)
 
 
@@ -72,7 +72,7 @@ def uninstall():
 uninstall.add_command(uninstall_all)
 uninstall.add_command(uninstall_application_configuration)
 uninstall.add_command(uninstall_database)
-uninstall.add_command(uninstall_nginx_configuration)
+uninstall.add_command(uninstall_nginx)
 uninstall.add_command(uninstall_systemd_configuration)
 uninstall.add_command(uninstall_wifi_hotspot)
 

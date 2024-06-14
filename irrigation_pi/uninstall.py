@@ -28,7 +28,7 @@ def uninstall_all(ctx: Context):
     ctx.forward(uninstall_application_configuration)
     ctx.forward(uninstall_database)
     ctx.forward(uninstall_systemd_configuration)
-    ctx.forward(uninstall_nginx_configuration)
+    ctx.forward(uninstall_nginx)
 
 
 @click.command(name="config")
@@ -68,8 +68,8 @@ def uninstall_systemd_configuration():
     SYSTEMD_CONFIG_PATH.unlink(missing_ok=True)
 
 
-@click.command(name="nginx-config")
-def uninstall_nginx_configuration():
+@click.command(name="nginx")
+def uninstall_nginx():
     """Uninstall nginx configuration.
     \f
     :return:
@@ -83,6 +83,9 @@ def uninstall_nginx_configuration():
 
     # Reload nginx config
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
+
+    click.echo("Uninstalling nginx Debian package...")
+    run_subprocess(["sudo", "apt", "uninstall", "nginx", "-y"])
 
 
 @click.command(name="wifi-hotspot")

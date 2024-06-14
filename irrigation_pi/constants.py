@@ -2,11 +2,10 @@
 
 from pathlib import Path
 
-DEBIAN_PACKAGES: list[str] = [
+DEBIAN_GPIO_PACKAGES: list[str] = [
     "python3-gpiozero",
     "python3-pigpio",
     "python3-rpi.gpio",
-    "nginx",
 ]
 
 PROJECT_ROOT_PATH: Path = Path(__file__).parent.parent.resolve()

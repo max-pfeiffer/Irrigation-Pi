@@ -14,7 +14,7 @@ from irrigation_pi.constants import (
     APPLICATION_USER_GROUP,
     BACKEND_PATH,
     DATABASE_PATH,
-    DEBIAN_PACKAGES,
+    DEBIAN_GPIO_PACKAGES,
     HOST,
     NGINX_CONFIG_ACTIVATION_PATH,
     NGINX_CONFIG_PATH,
@@ -44,7 +44,7 @@ def install_all(ctx: Context):
     ctx.forward(install_application_configuration)
     ctx.forward(install_database)
     ctx.forward(install_systemd_configuration)
-    ctx.forward(install_nginx_configuration)
+    ctx.forward(install_nginx)
 
 
 @click.command(name="debian-packages")
@@ -58,7 +58,14 @@ def install_debian_packages():
 
     click.echo("Installing Debian packages...")
     run_subprocess(
-        ["sudo", "apt", "install", *DEBIAN_PACKAGES, "--no-install-recommends", "-y"]
+        [
+            "sudo",
+            "apt",
+            "install",
+            *DEBIAN_GPIO_PACKAGES,
+            "--no-install-recommends",
+            "-y",
+        ]
     )
 
 
@@ -116,14 +123,20 @@ def install_systemd_configuration():
     run_subprocess(["sudo", "systemctl", "start", "irrigation-pi"])
 
 
-@click.command(name="nginx-config")
-def install_nginx_configuration():
-    """Install nginx configuration.
+@click.command(name="nginx")
+def install_nginx():
+    """Install nginx and it's configuration.
 
     See: https://nginx.org/en/docs/
     \f
     :return:
     """
+    click.echo("Updating Debian package sources...")
+    run_subprocess(["sudo", "apt", "update"])
+
+    click.echo("Installing nginx Debian package...")
+    run_subprocess(["sudo", "apt", "install", "nginx", "--no-install-recommends", "-y"])
+
     # Create nginx config
     click.echo("Installing nginx configuration...")
     server_root_path: Path = (
@@ -142,6 +155,21 @@ def install_nginx_configuration():
 
     # Reload nginx config
     run_subprocess(["sudo", "systemctl", "reload", "nginx"])
+
+
+@click.command(name="caddy")
+def install_caddy():
+    """Install caddy and it's configuration.
+
+    See: https://caddyserver.com/docs/
+    \f
+    :return:
+    """
+    click.echo("Updating Debian package sources...")
+    run_subprocess(["sudo", "apt", "update"])
+
+    click.echo("Installing caddy Debian package...")
+    run_subprocess(["sudo", "apt", "install", "caddy", "--no-install-recommends", "-y"])
 
 
 @click.command(name="wifi-hotspot")
